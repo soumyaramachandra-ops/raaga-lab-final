@@ -1,0 +1,7 @@
+/* RESPONSIVE FIXES */
+@media (max-width: 760px) {
+    .duel-chart-actions {
+        grid-template-columns: 1fr;
+    }
+}
+

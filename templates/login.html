@@ -1,0 +1,24 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Login - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <div class="auth-box">
+        <div class="analysis-header">
+            <span class="eyebrow">Secure studio access</span>
+            <h1>Welcome <span class="gradient-text">back</span></h1>
+            <p>Login to continue tracking your musical analytics journey.</p>
+        </div>
+
+        <form method="POST" class="stacked-form">
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button class="primary-btn" type="submit">Login</button>
+        </form>
+
+        <div class="form-link"><a href="/forgot-password">Forgot Password?</a></div>
+        <div class="form-note">Don't have an account? <a href="/signup">Sign Up</a></div>
+    </div>
+</section>
+{% endblock %}

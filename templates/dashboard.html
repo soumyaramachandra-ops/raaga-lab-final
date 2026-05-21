@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Private analytics workspace</span>
+    <h1>{{ current_user.full_name }}'s <span class="gradient-text">dashboard</span></h1>
+    <p>Track practice streaks, pitch accuracy trends, frequency distribution, uploads, and graph history.</p>
+</section>
+
+<section class="results-grid dashboard-kpis">
+    <div class="result-card">
+        <h3>Total Sessions</h3>
+        <p>{{ total_sessions }}</p>
+        <small>{{ total_duration }} seconds analyzed</small>
+    </div>
+
+    <div class="result-card">
+        <h3>Practice Streak</h3>
+        <p>{{ streak_days }}</p>
+        <small>{{ 'day' if streak_days == 1 else 'days' }} in a row</small>
+    </div>
+
+    <div class="result-card">
+        <h3>Best Stability</h3>
+        <p>{{ best_stability }}%</p>
+        <small>Highest pitch stability</small>
+    </div>
+
+    <div class="result-card">
+        <h3>Avg Frequency</h3>
+        <p>{{ analytics.average_frequency }}</p>
+        <small>Hz across recent sessions</small>
+    </div>
+</section>
+
+<section class="section chart-grid">
+    <div class="analysis-box chart-card chart-card-wide">
+        <div class="section-head">
+            <div>
+                <span class="kicker">Accuracy trends</span>
+                <h2>Pitch And Timing Progress</h2>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-viewport">
+                <canvas id="trendChart" class="dashboard-chart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="analysis-box chart-card">
+        <span class="kicker">Frequency distribution</span>
+        <h2>Range Density</h2>
+        <div class="chart-container">
+            <div class="chart-viewport">
+                <canvas id="frequencyChart" class="dashboard-chart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="analysis-box chart-card">
+        <span class="kicker">Note profile</span>
+        <h2>Most Detected Notes</h2>
+        <div class="chart-container">
+            <div class="chart-viewport">
+                <canvas id="noteChart" class="dashboard-chart"></canvas>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section dashboard-grid">
+    <div class="analysis-box">
+        <div class="section-head">
+            <div>
+                <span class="kicker">Recent uploads</span>
+                <h2>Latest Sessions</h2>
+            </div>
+            <a class="download-link" href="/single-analysis">New Analysis</a>
+        </div>
+
+        <div class="upload-history">
+            {% for item in recent_sessions[:4] %}
+                <div class="upload-history-card">
+                    <div>
+                        <span class="kicker">{{ item.mode }}</span>
+                        <h3>{{ item.original_filename or 'Browser recording' }}</h3>
+                        <p>{{ item.created_at }} / {{ item.duration }}s / {{ item.detected_note }}</p>
+                    </div>
+                    <div class="upload-history-metrics">
+                        <span>{{ item.pitch_stability or 0 }}% stability</span>
+                        <span>{{ item.timing_consistency or 0 }}% timing</span>
+                    </div>
+                </div>
+            {% else %}
+                <p class="feedback-text">No uploads yet. Record or upload a take to start your analytics history.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="analysis-box">
+        <span class="kicker">AI insights</span>
+        <h2>Practice Signals</h2>
+        <div class="insight-stack">
+            {% for insight in analytics.insights %}
+                <div class="insight-card">
+                    <h3>{{ insight.title }}</h3>
+                    <p>{{ insight.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <div>
+            <span class="kicker">Graph previews</span>
+            <h2>Generated Analysis Assets</h2>
+        </div>
+    </div>
+
+    <div class="graph-preview-grid">
+        {% for item in graph_previews %}
+            <div class="analysis-box graph-preview-card">
+                <span class="kicker">{{ item.mode }}</span>
+                <h2>{{ item.detected_note }}</h2>
+                {% if item.dashboard_graph_assets %}
+                    {% for graph in item.dashboard_graph_assets %}
+                        <img src="{{ url_for('static', filename='graphs/' + graph.path) }}" class="analysis-image" alt="{{ graph.alt }}">
+                    {% endfor %}
+                    <div class="download-grid">
+                        {% for graph in item.dashboard_graph_assets %}
+                            <a href="{{ url_for('static', filename='graphs/' + graph.path) }}" download>{{ graph.label }}</a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="feedback-text">Preview unavailable</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="analysis-box">
+                <p class="feedback-text">Graph previews will appear here after your first analysis.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="analysis-box">
+    <span class="kicker">Session history</span>
+    <h2>Full Recent Session Table</h2>
+    <table class="reference-table">
+        <tr>
+            <th>Date</th>
+            <th>Mode</th>
+            <th>File</th>
+            <th>Note</th>
+            <th>Freq</th>
+            <th>Range</th>
+            <th>Stability</th>
+            <th>Graph</th>
+        </tr>
+
+        {% for item in recent_sessions %}
+            <tr>
+                <td>{{ item.created_at }}</td>
+                <td>{{ item.mode }}</td>
+                <td>{{ item.original_filename or 'Recording' }}</td>
+                <td>{{ item.detected_note }}</td>
+                <td>{{ item.dominant_frequency }} Hz</td>
+                <td>{{ item.vocal_range or '-' }}</td>
+                <td>{{ item.pitch_stability or 0 }}%</td>
+                <td>
+                    {% if item.waveform_path %}
+                        <a class="table-link" href="{{ url_for('static', filename='graphs/' + item.waveform_path) }}" download>Download</a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Run Solo or Duel Analysis to populate your history.</td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+
+<script id="dashboard-data" type="application/json">
+{{ analytics | tojson }}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+(() => {
+    if (window.__raagaDashboardChartsReady || !window.Chart) {
+        return;
+    }
+    window.__raagaDashboardChartsReady = true;
+
+    const dataNode = document.getElementById("dashboard-data");
+    if (!dataNode) {
+        return;
+    }
+
+    const dashboardData = JSON.parse(dataNode.textContent);
+    const gridColor = "rgba(255,255,255,0.08)";
+    const labelColor = "#9ba4b5";
+
+    Chart.defaults.color = labelColor;
+    Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        resizeDelay: 150,
+    };
+
+    window.__raagaCharts = window.__raagaCharts || {};
+
+    const createChart = (id, config) => {
+        const canvas = document.getElementById(id);
+        if (!canvas) {
+            return;
+        }
+        if (canvas.dataset.chartInitialized === "true" && window.__raagaCharts[id]) {
+            return;
+        }
+        if (!window.__raagaCharts[id]) {
+            window.__raagaCharts[id] = new Chart(canvas, config);
+        }
+        canvas.dataset.chartInitialized = "true";
+    };
+
+    // Ensure we don't trigger a flurry of resize/layout passes on load
+    window.setTimeout(() => {
+        try {
+            Object.values(window.__raagaCharts).forEach((ch) => ch && ch.resize && ch.resize());
+        } catch (e) {}
+    }, 0);
+
+
+    createChart("trendChart", {
+        type: "line",
+        data: {
+            labels: dashboardData.trend_labels,
+            datasets: [
+                {
+                    label: "Pitch Stability",
+                    data: dashboardData.stability,
+                    borderColor: "#3ee7f3",
+                    backgroundColor: "rgba(62,231,243,0.14)",
+                    tension: 0.36,
+                    fill: true,
+                },
+                {
+                    label: "Timing Consistency",
+                    data: dashboardData.timing,
+                    borderColor: "#42f59b",
+                    backgroundColor: "rgba(66,245,155,0.09)",
+                    tension: 0.36,
+                    fill: true,
+                },
+            ],
+        },
+        options: {
+            ...chartOptions,
+            scales: {
+                x: { grid: { color: gridColor } },
+                y: { min: 0, max: 100, grid: { color: gridColor } },
+            },
+            plugins: { legend: { labels: { usePointStyle: true } } },
+        },
+    });
+
+    createChart("frequencyChart", {
+        type: "bar",
+        data: {
+            labels: dashboardData.frequency_labels,
+            datasets: [{
+                label: "Sessions",
+                data: dashboardData.frequency_values,
+                backgroundColor: ["#3ee7f3", "#42f59b", "#9b6cff", "#ffcc66", "#ff4f8f"],
+                borderRadius: 8,
+            }],
+        },
+        options: {
+            ...chartOptions,
+            scales: {
+                x: { grid: { display: false } },
+                y: { beginAtZero: true, grid: { color: gridColor }, ticks: { precision: 0 } },
+            },
+            plugins: { legend: { display: false } },
+        },
+    });
+
+    createChart("noteChart", {
+        type: "doughnut",
+        data: {
+            labels: dashboardData.note_labels,
+            datasets: [{
+                data: dashboardData.note_values,
+                backgroundColor: ["#3ee7f3", "#42f59b", "#9b6cff", "#ffcc66", "#ff4f8f", "#d6dbe7"],
+                borderColor: "rgba(5,6,9,0.85)",
+                borderWidth: 3,
+            }],
+        },
+        options: {
+            ...chartOptions,
+            plugins: { legend: { position: "bottom", labels: { usePointStyle: true } } },
+        },
+    });
+})();
+</script>
+{% endblock %}

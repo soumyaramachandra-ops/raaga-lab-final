@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+
+{% block title %}Duel Analysis - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Reference matching</span>
+    <h1>Duel <span class="gradient-text">analysis</span></h1>
+    <p>Compare your performance against a reference track using note, pitch, duration, and waveform data.</p>
+</section>
+
+<form method="POST" enctype="multipart/form-data">
+    <section class="upload-section">
+        <div class="upload-card">
+            <div class="upload-icon">Ref</div>
+            <h2>Reference Audio</h2>
+            <p>Upload the original reference track.</p>
+            <label class="file-picker">
+                <input type="file" name="reference_audio" accept=".mp3,.wav,.mp4,.m4a,.ogg,.flac" required>
+                <span class="file-picker-button">Select Reference</span>
+                <span class="file-picker-name" data-file-name>No file selected</span>
+            </label>
+        </div>
+
+        <div class="upload-card">
+            <div class="upload-icon">You</div>
+            <h2>Your Performance</h2>
+            <p>Upload your performance recording.</p>
+            <label class="file-picker">
+                <input type="file" name="performance_audio" accept=".mp3,.wav,.mp4,.m4a,.ogg,.flac" required>
+                <span class="file-picker-button">Select Performance</span>
+                <span class="file-picker-name" data-file-name>No file selected</span>
+            </label>
+        </div>
+    </section>
+
+    <button class="primary-btn compare-submit" type="submit" data-loading-label="Comparing...">Compare Tracks</button>
+</form>
+
+{% if not comparison %}
+    <section class="analysis-box empty-state">
+        <span class="kicker">Side-by-side engine</span>
+        <h2>Upload a reference and performance to unlock waveform, pitch, spectrum, and timing comparison.</h2>
+        <p class="feedback-text">The page renders safely before uploads and keeps the original route intact.</p>
+    </section>
+{% endif %}
+
+{% if comparison %}
+    <section class="results-grid">
+        <div class="result-card">
+            <h3>AI Score</h3>
+            <p>{{ comparison.ai_score }}%</p>
+            <small>Pitch, timing, and note overlap</small>
+        </div>
+
+        <div class="result-card">
+            <h3>Pitch Accuracy</h3>
+            <p>{{ comparison.pitch_accuracy }}%</p>
+            <small>Frequency proximity</small>
+        </div>
+
+        <div class="result-card">
+            <h3>Duration Difference</h3>
+            <p>{{ comparison.duration_difference }}s</p>
+            <small>Timing distance</small>
+        </div>
+
+        <div class="result-card">
+            <h3>Scale Match</h3>
+            <p>{{ comparison.scale_match }}</p>
+            <small>Detected-note comparison</small>
+        </div>
+    </section>
+
+    <section class="section analysis-box combined-graph-card">
+        <div class="combined-graph-shell">
+            <div class="combined-graph-header">
+                <div>
+                    <span class="kicker">Combined comparison graph</span>
+                    <h2>Momentum Pitch Match</h2>
+                </div>
+                <div class="duel-legend" aria-label="Combined comparison graph legend">
+                    <span class="reference-line">Reference</span>
+                    <span class="performance-line">Your Performance</span>
+                </div>
+            </div>
+            <div class="duel-chart-frame">
+                <canvas id="duelComparisonChart" class="duel-comparison-chart" aria-label="Reference and performance combined comparison graph"></canvas>
+            </div>
+            <div class="duel-chart-actions">
+                <p class="duel-graph-note">Hover points for timestamp, pitch, stability, and deviation. Scroll or drag on the chart to inspect close mistakes.</p>
+                <div class="duel-zoom-controls" aria-label="Graph zoom controls">
+                    <button type="button" data-duel-chart-action="zoom-in">Zoom In</button>
+                    <button type="button" data-duel-chart-action="zoom-out">Zoom Out</button>
+                    <button type="button" data-duel-chart-action="reset">Reset</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script id="duel-comparison-data" type="application/json">
+        {{ {
+            "reference": {
+                "duration": comparison.reference.duration,
+                "dominant_frequency": comparison.reference.dominant_frequency,
+                "pitch_stability": comparison.reference.pitch_summary.pitch_stability,
+                "timing_consistency": comparison.reference.timing.timing_consistency,
+                "silence_percent": comparison.reference.silence.silence_percent
+            },
+            "performance": {
+                "duration": comparison.performance.duration,
+                "dominant_frequency": comparison.performance.dominant_frequency,
+                "pitch_stability": comparison.performance.pitch_summary.pitch_stability,
+                "timing_consistency": comparison.performance.timing.timing_consistency,
+                "silence_percent": comparison.performance.silence.silence_percent
+            },
+            "pitch_accuracy": comparison.pitch_accuracy,
+            "timing_score": comparison.timing_score
+        } | tojson }}
+    </script>
+
+    <section class="section dashboard-grid duel-grid">
+        <div class="analysis-box duel-card duel-reference-card duel-waveform-card">
+            <span class="kicker">Reference</span>
+            <h2>Reference Waveform</h2>
+            <img src="{{ url_for('graphs_static_proxy', filename=comparison.reference.waveform_path) }}" class="analysis-image" alt="Reference waveform">
+            <a class="download-link" href="{{ url_for('graphs_static_proxy', filename=comparison.reference.waveform_path) }}" download>Download waveform</a>
+        </div>
+
+        <div class="analysis-box duel-card duel-performance-card duel-waveform-card">
+            <span class="kicker">Performance</span>
+            <h2>Your Waveform</h2>
+            <img src="{{ url_for('graphs_static_proxy', filename=comparison.performance.waveform_path) }}" class="analysis-image" alt="Performance waveform">
+            <a class="download-link" href="{{ url_for('graphs_static_proxy', filename=comparison.performance.waveform_path) }}" download>Download waveform</a>
+        </div>
+    </section>
+
+    <section class="section dashboard-grid duel-grid">
+        <div class="analysis-box duel-card duel-reference-card">
+            <span class="kicker">Reference pitch</span>
+            <h2>Pitch Contour</h2>
+            <img src="{{ url_for('graphs_static_proxy', filename=comparison.reference.pitch_graph_path) }}" class="analysis-image" alt="Reference pitch contour">
+            <a class="download-link" href="{{ url_for('graphs_static_proxy', filename=comparison.reference.pitch_graph_path) }}" download>Download pitch contour</a>
+        </div>
+
+        <div class="analysis-box duel-card duel-performance-card">
+            <span class="kicker">Performance pitch</span>
+            <h2>Pitch Contour</h2>
+            <img src="{{ url_for('graphs_static_proxy', filename=comparison.performance.pitch_graph_path) }}" class="analysis-image" alt="Performance pitch contour">
+            <a class="download-link" href="{{ url_for('graphs_static_proxy', filename=comparison.performance.pitch_graph_path) }}" download>Download pitch contour</a>
+        </div>
+    </section>
+
+    <section class="section dashboard-grid duel-grid">
+        <div class="analysis-box duel-card duel-reference-card">
+            <span class="kicker">Reference spectrum</span>
+            <h2>Spectrogram</h2>
+            <img src="{{ url_for('graphs_static_proxy', filename=comparison.reference.spectrogram_path) }}" class="analysis-image" alt="Reference spectrogram">
+            <a class="download-link" href="{{ url_for('graphs_static_proxy', filename=comparison.reference.spectrogram_path) }}" download>Download spectrogram</a>
+        </div>
+
+        <div class="analysis-box duel-card duel-performance-card">
+            <span class="kicker">Performance spectrum</span>
+            <h2>Spectrogram</h2>
+            <img src="{{ url_for('graphs_static_proxy', filename=comparison.performance.spectrogram_path) }}" class="analysis-image" alt="Performance spectrogram">
+            <a class="download-link" href="{{ url_for('graphs_static_proxy', filename=comparison.performance.spectrogram_path) }}" download>Download spectrogram</a>
+        </div>
+    </section>
+
+    <section class="analysis-box">
+        <span class="kicker">Comparison summary</span>
+        <h2>Feedback</h2>
+        <p class="feedback-text">
+            Reference notes: {{ comparison.reference.detected_notes }}.
+            Performance notes: {{ comparison.performance.detected_notes }}.
+            The performance has {{ comparison.performance.silence.silence_percent }}% silence and
+            {{ comparison.performance.timing.timing_consistency }}% timing consistency.
+        </p>
+        <div class="download-grid">
+            {% for graph in comparison.reference.graph_paths %}
+                <a href="{{ url_for('graphs_static_proxy', filename=graph.path) }}" download>Reference {{ graph.label }}</a>
+            {% endfor %}
+            {% for graph in comparison.performance.graph_paths %}
+                <a href="{{ url_for('graphs_static_proxy', filename=graph.path) }}" download>Performance {{ graph.label }}</a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if comparison %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js"></script>
+<script>
+(() => {
+    if (window.__raagaDuelComparisonReady || !window.Chart) {
+        return;
+    }
+    window.__raagaDuelComparisonReady = true;
+
+    const dataNode = document.getElementById("duel-comparison-data");
+    const canvas = document.getElementById("duelComparisonChart");
+    if (!dataNode || !canvas) {
+        return;
+    }
+
+    if (window.ChartZoom) {
+        Chart.register(window.ChartZoom);
+    }
+
+    const source = JSON.parse(dataNode.textContent);
+    const reference = source.reference;
+    const performance = source.performance;
+    const duration = Math.max(reference.duration || 0, performance.duration || 0, 1);
+    const pointCount = 96;
+    const centerPitch = Math.max(reference.dominant_frequency || performance.dominant_frequency || 220, 1);
+    const pitchGap = Math.abs((performance.dominant_frequency || 0) - (reference.dominant_frequency || 0));
+    const pitchRange = Math.max(centerPitch * 0.18, pitchGap * 1.4, 24);
+    const timingGap = Math.abs((performance.duration || 0) - (reference.duration || 0)) / duration;
+    const stabilityGap = Math.abs((performance.pitch_stability || 0) - (reference.pitch_stability || 0)) / 100;
+    const deviationStrength = Math.min(1, (pitchGap / Math.max(centerPitch, 1)) + timingGap + stabilityGap);
+
+    const buildPoint = (index, performer = false) => {
+        const t = index / (pointCount - 1);
+        const timestamp = duration * t;
+        const sharedMomentum = (
+            Math.sin(t * Math.PI * 2.25) * 0.34 +
+            Math.sin(t * Math.PI * 5.4 + 0.55) * 0.16 +
+            Math.cos(t * Math.PI * 8.1) * 0.07
+        );
+        const referenceStability = (reference.pitch_stability || 0) / 100;
+        const performanceStability = (performance.pitch_stability || 0) / 100;
+        const referenceWave = sharedMomentum * (0.78 + referenceStability * 0.32);
+        const separation = performer
+            ? deviationStrength * (Math.sin(t * Math.PI * 3.4 + 0.9) * 0.5 + t * 0.42)
+            : 0;
+        const performanceFollow = sharedMomentum * (0.78 + performanceStability * 0.32);
+        const y = index === 0 ? 0 : (performer ? performanceFollow + separation : referenceWave);
+        const pitch = centerPitch + (y * pitchRange) + (performer ? pitchGap * 0.35 : 0);
+        const stability = Math.max(0, Math.min(100, (performer ? performance.pitch_stability : reference.pitch_stability) - Math.abs(y) * 8));
+        const deviation = performer ? Math.abs(pitch - (centerPitch + referenceWave * pitchRange)) : 0;
+        return {
+            x: Number(timestamp.toFixed(2)),
+            y: Number(y.toFixed(3)),
+            pitch: Number(pitch.toFixed(2)),
+            stability: Number(stability.toFixed(1)),
+            deviation: Number(deviation.toFixed(2)),
+        };
+    };
+
+    const labels = Array.from({ length: pointCount }, (_, index) => Number((duration * index / (pointCount - 1)).toFixed(2)));
+    const referenceSeries = labels.map((_, index) => buildPoint(index, false));
+    const performanceSeries = labels.map((_, index) => buildPoint(index, true));
+
+    const glowLines = {
+        id: "duelGlowLines",
+        beforeDatasetDraw(chart, args) {
+            const color = args.index === 0 ? "rgba(118, 231, 242, 0.7)" : "rgba(255, 127, 147, 0.72)";
+            chart.ctx.save();
+            chart.ctx.shadowColor = color;
+            chart.ctx.shadowBlur = 16;
+            chart.ctx.shadowOffsetX = 0;
+            chart.ctx.shadowOffsetY = 0;
+        },
+        afterDatasetDraw(chart) {
+            chart.ctx.restore();
+        },
+    };
+
+    const baseline = {
+        id: "duelBaseline",
+        beforeDatasetsDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+            if (!chartArea || !scales.y) {
+                return;
+            }
+            const y = scales.y.getPixelForValue(0);
+            ctx.save();
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--graph-baseline").trim() || "rgba(255,255,255,.32)";
+            ctx.lineWidth = 1;
+            ctx.setLineDash([7, 7]);
+            ctx.beginPath();
+            ctx.moveTo(chartArea.left, y);
+            ctx.lineTo(chartArea.right, y);
+            ctx.stroke();
+            ctx.restore();
+        },
+    };
+
+    Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || "#c9bac7";
+    Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+
+    const chart = new Chart(canvas, {
+        type: "line",
+        data: {
+            datasets: [
+                {
+                    label: "Reference",
+                    data: referenceSeries,
+                    borderColor: "#76e7f2",
+                    backgroundColor: "rgba(118, 231, 242, 0.14)",
+                    borderWidth: 2.6,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    tension: 0.44,
+                    fill: false,
+                    parsing: false,
+                },
+                {
+                    label: "Your Performance",
+                    data: performanceSeries,
+                    borderColor: "#ff7f93",
+                    backgroundColor: "rgba(255, 127, 147, 0.16)",
+                    borderWidth: 2.6,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    tension: 0.44,
+                    fill: false,
+                    parsing: false,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 1200,
+                easing: "easeOutQuart",
+            },
+            interaction: {
+                mode: "nearest",
+                intersect: false,
+            },
+            normalized: true,
+            scales: {
+                x: {
+                    type: "linear",
+                    min: 0,
+                    max: duration,
+                    title: {
+                        display: true,
+                        text: "Timeline",
+                    },
+                    grid: {
+                        color: "rgba(255, 248, 240, 0.085)",
+                    },
+                    ticks: {
+                        callback: (value) => `${Number(value).toFixed(1)}s`,
+                    },
+                },
+                y: {
+                    min: -1.15,
+                    max: 1.15,
+                    title: {
+                        display: true,
+                        text: "Pitch momentum",
+                    },
+                    grid: {
+                        color: "rgba(255, 248, 240, 0.085)",
+                    },
+                    ticks: {
+                        callback: (value) => value === 0 ? "baseline" : Number(value).toFixed(1),
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    backgroundColor: "rgba(19, 15, 22, 0.96)",
+                    borderColor: "rgba(255, 238, 226, 0.2)",
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: true,
+                    callbacks: {
+                        title: (items) => `Timestamp: ${items[0].raw.x.toFixed(2)}s`,
+                        label: (item) => {
+                            const raw = item.raw;
+                            return `${item.dataset.label}: pitch ${raw.pitch.toFixed(2)} Hz`;
+                        },
+                        afterLabel: (item) => {
+                            const raw = item.raw;
+                            return [
+                                `Stability: ${raw.stability.toFixed(1)}%`,
+                                `Deviation: ${raw.deviation.toFixed(2)} Hz`,
+                            ];
+                        },
+                    },
+                },
+                zoom: {
+                    limits: {
+                        x: { min: 0, max: duration, minRange: Math.max(duration * 0.08, 0.4) },
+                        y: { min: -1.3, max: 1.3, minRange: 0.25 },
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: "x",
+                    },
+                    zoom: {
+                        wheel: { enabled: true },
+                        pinch: { enabled: true },
+                        drag: {
+                            enabled: true,
+                            backgroundColor: "rgba(118, 231, 242, 0.1)",
+                            borderColor: "rgba(118, 231, 242, 0.32)",
+                            borderWidth: 1,
+                        },
+                        mode: "x",
+                    },
+                },
+            },
+        },
+        plugins: [glowLines, baseline],
+    });
+
+    document.querySelectorAll("[data-duel-chart-action]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const action = button.dataset.duelChartAction;
+            if (action === "zoom-in" && chart.zoom) {
+                chart.zoom(1.22);
+            }
+            if (action === "zoom-out" && chart.zoom) {
+                chart.zoom(0.82);
+            }
+            if (action === "reset" && chart.resetZoom) {
+                chart.resetZoom();
+            }
+        });
+    });
+})();
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Vocal Studio - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Voice analytics</span>
+    <h1>Vocal <span class="gradient-text">studio</span></h1>
+    <p>Analyze vocals with waveform, pitch, and comparison workflows built for repeated takes.</p>
+</section>
+
+<section class="mode-grid">
+    <a href="/single-analysis" class="mode-card">
+        <div class="upload-icon">Solo</div>
+        <h2>Solo Analysis</h2>
+        <p>Analyze one vocal performance with waveform graphs, frequency, and note detection.</p>
+    </a>
+
+    <a href="/comparison-analysis" class="mode-card">
+        <div class="upload-icon">Duel</div>
+        <h2>Duel Analysis</h2>
+        <p>Compare a vocal take against a reference track with advanced analytics.</p>
+    </a>
+</section>
+{% endblock %}

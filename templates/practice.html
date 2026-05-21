@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Practice Studio - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Choose your workflow</span>
+    <h1>Practice <span class="gradient-text">studio</span></h1>
+    <p>Select a studio mode and move directly into solo or comparison analysis.</p>
+</section>
+
+<section class="mode-grid">
+    <a href="/vocal-mode" class="mode-card">
+        <div class="upload-icon">Vox</div>
+        <h2>Vocal Studio</h2>
+        <p>Analyze singing, pitch, note consistency, and take stability.</p>
+    </a>
+
+    <a href="/instrument-mode" class="mode-card">
+        <div class="upload-icon">Inst</div>
+        <h2>Instrument Studio</h2>
+        <p>Analyze guitar, piano, violin, flute, and other instrument recordings.</p>
+    </a>
+
+    <a href="/single-analysis" class="mode-card">
+        <div class="upload-icon">Solo</div>
+        <h2>Quick Solo Analysis</h2>
+        <p>Skip setup and upload one file for waveform and pitch analysis.</p>
+    </a>
+
+    <a href="/comparison-analysis" class="mode-card">
+        <div class="upload-icon">Duel</div>
+        <h2>Quick Duel Analysis</h2>
+        <p>Compare a reference track with your current performance.</p>
+    </a>
+</section>
+{% endblock %}

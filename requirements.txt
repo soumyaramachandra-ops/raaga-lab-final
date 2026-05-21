@@ -1,0 +1,10 @@
+Flask
+librosa
+numpy
+matplotlib
+soundfile
+scipy
+moviepy
+imageio
+imageio-ffmpeg
+pandas

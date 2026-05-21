@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Solo Analysis - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Single take intelligence</span>
+    <h1>Solo <span class="gradient-text">analysis</span></h1>
+    <p>Upload audio and get waveform analytics, note detection, dominant frequency tracking, and feedback.</p>
+</section>
+
+<section class="upload-section">
+    <div class="upload-card">
+        <div class="upload-icon">File</div>
+        <h2>Upload Audio</h2>
+        <p>Supports MP3, WAV, MP4, M4A, OGG, FLAC and browser WebM recordings.</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <label class="file-picker">
+                <input type="file" name="audio" accept=".mp3,.wav,.mp4,.m4a,.ogg,.flac,.webm,.weba" required>
+                <span class="file-picker-button">Select Audio</span>
+                <span class="file-picker-name" data-file-name>No file selected</span>
+            </label>
+            <button type="submit" data-loading-label="Analyzing...">Analyze Audio</button>
+        </form>
+    </div>
+
+    <div class="upload-card">
+        <div class="upload-icon">Mic</div>
+        <h2>Live Recording</h2>
+        <p>Record directly in the browser. Stop the take and RAAGA LAB uploads it for analysis automatically.</p>
+
+        <div class="recorder-panel" data-upload-url="{{ url_for('single_analysis') }}">
+            <div class="recorder-status-row">
+                <span id="recordingStatus" class="recording-status">Ready</span>
+                <span id="recordingTimer" class="recording-timer">00:00</span>
+            </div>
+
+            <canvas id="liveWaveform" class="live-waveform" width="760" height="180" aria-label="Live microphone waveform"></canvas>
+
+            <div class="recorder-controls">
+                <button id="startRecordingBtn" type="button">Start Recording</button>
+                <button id="stopRecordingBtn" class="secondary-btn" type="button" disabled>Stop Recording</button>
+            </div>
+
+            <audio id="recordedPlayback" class="audio-player recorded-playback" controls hidden></audio>
+            <a id="recordingDownload" class="download-link" href="#" download="raaga-lab-recording.webm" hidden>Download recording</a>
+        </div>
+    </div>
+</section>
+
+{% if not waveform_path %}
+    <section class="analysis-box empty-state">
+        <span class="kicker">Ready when you are</span>
+        <h2>Upload or record a take to generate a full analysis suite.</h2>
+        <p class="feedback-text">GET requests stay clean on this page: all metrics start with safe defaults and appear only after a successful upload.</p>
+    </section>
+{% endif %}
+
+{% if waveform_path %}
+    <section class="analysis-box">
+        <span class="kicker">Playback</span>
+        <h2>Audio Preview</h2>
+        <audio controls class="audio-player">
+            <source src="{{ url_for('static', filename='uploads/' + audio_path) }}">
+        </audio>
+    </section>
+
+    <section class="results-grid">
+        <div class="result-card">
+            <h3>Primary Note</h3>
+            <p>{{ primary_note }}</p>
+            <small>Dominant-frequency estimate</small>
+        </div>
+
+        <div class="result-card">
+            <h3>Dominant Frequency</h3>
+            <p>{{ dominant_frequency }} Hz</p>
+            <small>FFT-based peak</small>
+        </div>
+
+        <div class="result-card">
+            <h3>Pitch Stability</h3>
+            <p>{{ pitch_summary.pitch_stability }}%</p>
+            <small>{{ pitch_summary.voiced_frames }} voiced frames</small>
+        </div>
+
+        <div class="result-card">
+            <h3>Vocal Range</h3>
+            <p>{{ vocal_range.low_note }}-{{ vocal_range.high_note }}</p>
+            <small>{{ vocal_range.range_semitones }} semitones</small>
+        </div>
+    </section>
+
+    <section class="section dashboard-grid">
+        <div class="analysis-box">
+            <span class="kicker">Waveform</span>
+            <h2>Amplitude Signature</h2>
+            <img src="{{ url_for('static', filename='graphs/' + waveform_path) }}" class="analysis-image" alt="Waveform graph">
+            <a class="download-link" href="{{ url_for('static', filename='graphs/' + waveform_path) }}" download>Download waveform</a>
+        </div>
+
+        <div class="analysis-box">
+            <span class="kicker">Pitch</span>
+            <h2>Pitch Tracking</h2>
+            <img src="{{ url_for('static', filename='graphs/' + pitch_graph_path) }}" class="analysis-image" alt="Pitch graph">
+            <a class="download-link" href="{{ url_for('static', filename='graphs/' + pitch_graph_path) }}" download>Download pitch contour</a>
+        </div>
+    </section>
+
+    <section class="section dashboard-grid">
+        <div class="analysis-box">
+            <span class="kicker">Spectrum</span>
+            <h2>Spectrogram Analysis</h2>
+            <img src="{{ url_for('static', filename='graphs/' + spectrogram_path) }}" class="analysis-image" alt="Spectrogram graph">
+            <a class="download-link" href="{{ url_for('static', filename='graphs/' + spectrogram_path) }}" download>Download spectrogram</a>
+        </div>
+
+        <div class="analysis-box">
+            <span class="kicker">Frequency</span>
+            <h2>Dominant Frequency Track</h2>
+            <img src="{{ url_for('static', filename='graphs/' + dominant_graph_path) }}" class="analysis-image" alt="Dominant frequency graph">
+            <a class="download-link" href="{{ url_for('static', filename='graphs/' + dominant_graph_path) }}" download>Download frequency track</a>
+        </div>
+    </section>
+
+    <section class="section dashboard-grid">
+        <div class="analysis-box">
+            <span class="kicker">AI-style feedback</span>
+            <h2>Practice Notes</h2>
+            <p class="feedback-text">
+                Your recording was normalized before analysis. The system extracted
+                {{ detected_notes }}, found {{ silence.silence_percent }}% silence,
+                and measured {{ timing.timing_consistency }}% timing consistency
+                across {{ timing.onset_count }} detected onsets.
+            </p>
+            <div class="metric-row metric-row-compact">
+                <div class="metric-tile"><span>Duration</span><strong>{{ duration }}s</strong></div>
+                <div class="metric-tile"><span>Average Pitch</span><strong>{{ pitch_summary.average_pitch }} Hz</strong></div>
+                <div class="metric-tile"><span>Active Audio</span><strong>{{ silence.active_seconds }}s</strong></div>
+            </div>
+        </div>
+
+        <div class="analysis-box">
+            <span class="kicker">Notes</span>
+            <h2>Extracted Note Sequence</h2>
+            {% if extracted_notes %}
+                <div class="note-cloud">
+                    {% for note in extracted_notes %}
+                        <span>{{ note }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="feedback-text">No stable note contour was detected.</p>
+            {% endif %}
+            <table class="reference-table">
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Low note</td><td>{{ vocal_range.low_note }} / {{ vocal_range.low_frequency }} Hz</td></tr>
+                <tr><td>High note</td><td>{{ vocal_range.high_note }} / {{ vocal_range.high_frequency }} Hz</td></tr>
+                <tr><td>Silence</td><td>{{ silence.silent_seconds }}s across {{ silence.active_regions }} active regions</td></tr>
+                <tr><td>Average onset gap</td><td>{{ timing.average_gap }}s</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <section class="analysis-box">
+        <span class="kicker">Downloads</span>
+        <h2>Graph Exports</h2>
+        <div class="download-grid">
+            {% for graph in graph_paths %}
+                <a href="{{ url_for('static', filename='graphs/' + graph.path) }}" download>{{ graph.label }}</a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="analysis-box">
+        <span class="kicker">Reference</span>
+        <h2>Frequency Table</h2>
+            <table class="reference-table">
+                <tr><th>Note</th><th>Frequency</th></tr>
+                <tr><td>C4</td><td>261.63 Hz</td></tr>
+                <tr><td>D4</td><td>293.66 Hz</td></tr>
+                <tr><td>E4</td><td>329.63 Hz</td></tr>
+                <tr><td>F4</td><td>349.23 Hz</td></tr>
+                <tr><td>G4</td><td>392.00 Hz</td></tr>
+                <tr><td>A4</td><td>440.00 Hz</td></tr>
+            </table>
+    </section>
+{% endif %}
+{% endblock %}

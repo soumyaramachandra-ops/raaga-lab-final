@@ -1,0 +1,9 @@
+/* ANALYSIS */
+.analysis-box {
+    background: var(--card-background);
+}
+
+.analysis-box:hover {
+    box-shadow: var(--shadow), var(--hover-glow);
+}
+

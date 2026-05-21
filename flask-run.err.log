@@ -1,0 +1,98 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 111-078-152
+127.0.0.1 - - [20/May/2026 14:32:40] "POST /login HTTP/1.1" 302 -
+127.0.0.1 - - [20/May/2026 14:32:40] "GET /dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:32:42] "POST /single-analysis HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:32:42] "GET /dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:32:47] "POST /comparison-analysis HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:32:48] "GET /dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:33:00] "POST /login HTTP/1.1" 302 -
+127.0.0.1 - - [20/May/2026 14:33:00] "GET /dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:33:00] "GET /dashboard HTTP/1.1" 200 -
+ * Detected change in 'C:\\Users\\Admin\\OneDrive\\Desktop\\raaga_lab\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 111-078-152
+ * Detected change in 'C:\\Users\\Admin\\OneDrive\\Desktop\\raaga_lab\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 111-078-152
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/graphs/b21d8913d56b4d73a9f540393a53257b_0ccbc0231c5649349dd8d727d0e85b77_performance_spectrogram.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/graphs/dbe4038ce5384a70a5c2e597828f590e_1d31cba1423f4ebcb55dc015b6a74060_reference_pitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/graphs/dbe4038ce5384a70a5c2e597828f590e_1d31cba1423f4ebcb55dc015b6a74060_reference_waveform.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/graphs/dbe4038ce5384a70a5c2e597828f590e_1d31cba1423f4ebcb55dc015b6a74060_reference_spectrogram.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/graphs/b21d8913d56b4d73a9f540393a53257b_0ccbc0231c5649349dd8d727d0e85b77_performance_pitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:21] "GET /static/graphs/b21d8913d56b4d73a9f540393a53257b_0ccbc0231c5649349dd8d727d0e85b77_performance_waveform.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/ea9420ef54ed4ea9a563552be1f6e2dc_1bd62f93c77040c28c9d0abb3dcad7cb_solo_waveform.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/ea9420ef54ed4ea9a563552be1f6e2dc_1bd62f93c77040c28c9d0abb3dcad7cb_solo_pitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/ea9420ef54ed4ea9a563552be1f6e2dc_1bd62f93c77040c28c9d0abb3dcad7cb_solo_spectrogram.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/e05dce14d39544ab97c0e5e9b885fef2_c2315bf402fe43f7803cd0e79b5ca852_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/e05dce14d39544ab97c0e5e9b885fef2_c2315bf402fe43f7803cd0e79b5ca852_solo_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/e05dce14d39544ab97c0e5e9b885fef2_c2315bf402fe43f7803cd0e79b5ca852_solo_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/2078594076c748a1974601ba5c8ab8c3_d0b9b8f145ae4e0bab0774177a2feda4_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/2078594076c748a1974601ba5c8ab8c3_d0b9b8f145ae4e0bab0774177a2feda4_solo_pitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/2078594076c748a1974601ba5c8ab8c3_d0b9b8f145ae4e0bab0774177a2feda4_solo_spectrogram.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/513a23c1c55c48f2bb87cd990c05f1d4_291fce64ae5645cd86624fef0556b651_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/513a23c1c55c48f2bb87cd990c05f1d4_291fce64ae5645cd86624fef0556b651_solo_pitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:22] "GET /static/graphs/513a23c1c55c48f2bb87cd990c05f1d4_291fce64ae5645cd86624fef0556b651_solo_spectrogram.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:38] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [20/May/2026 14:34:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:34:38] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:34:38] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:35:48] "GET /single-analysis HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:35:48] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:35:48] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:35:58] "POST /single-analysis HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:35:58] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:35:58] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:22] "POST /single-analysis HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_waveform.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_pitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_spectrogram.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_dominant_frequency.png HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:22] "GET /static/uploads/f5e36622227d4e7eb0320096a50daa6a_solo.mp3 HTTP/1.1" 206 -
+127.0.0.1 - - [20/May/2026 14:36:43] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:43] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:43] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:46] "GET /signup HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:46] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:46] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:49] "POST /signup HTTP/1.1" 302 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/b21d8913d56b4d73a9f540393a53257b_0ccbc0231c5649349dd8d727d0e85b77_performance_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/e8bead8148ee42b086aa829d80d74c73_f5e36622227d4e7eb0320096a50daa6a_solo_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/b21d8913d56b4d73a9f540393a53257b_0ccbc0231c5649349dd8d727d0e85b77_performance_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/dbe4038ce5384a70a5c2e597828f590e_1d31cba1423f4ebcb55dc015b6a74060_reference_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/b21d8913d56b4d73a9f540393a53257b_0ccbc0231c5649349dd8d727d0e85b77_performance_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/dbe4038ce5384a70a5c2e597828f590e_1d31cba1423f4ebcb55dc015b6a74060_reference_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/dbe4038ce5384a70a5c2e597828f590e_1d31cba1423f4ebcb55dc015b6a74060_reference_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/ea9420ef54ed4ea9a563552be1f6e2dc_1bd62f93c77040c28c9d0abb3dcad7cb_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/ea9420ef54ed4ea9a563552be1f6e2dc_1bd62f93c77040c28c9d0abb3dcad7cb_solo_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/ea9420ef54ed4ea9a563552be1f6e2dc_1bd62f93c77040c28c9d0abb3dcad7cb_solo_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/e05dce14d39544ab97c0e5e9b885fef2_c2315bf402fe43f7803cd0e79b5ca852_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/e05dce14d39544ab97c0e5e9b885fef2_c2315bf402fe43f7803cd0e79b5ca852_solo_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/e05dce14d39544ab97c0e5e9b885fef2_c2315bf402fe43f7803cd0e79b5ca852_solo_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/2078594076c748a1974601ba5c8ab8c3_d0b9b8f145ae4e0bab0774177a2feda4_solo_waveform.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/2078594076c748a1974601ba5c8ab8c3_d0b9b8f145ae4e0bab0774177a2feda4_solo_pitch.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:50] "GET /static/graphs/2078594076c748a1974601ba5c8ab8c3_d0b9b8f145ae4e0bab0774177a2feda4_solo_spectrogram.png HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:56] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [20/May/2026 14:36:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2026 14:36:56] "GET /static/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [20/May/2026 14:36:56] "GET /static/script.js HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Admin\\OneDrive\\Desktop\\raaga_lab\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 111-078-152

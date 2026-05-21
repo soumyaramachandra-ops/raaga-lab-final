@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <div class="auth-box">
+        <div class="analysis-header">
+            <span class="eyebrow">Create your studio</span>
+            <h1>Create <span class="gradient-text">account</span></h1>
+            <p>Start saving sessions, notes, frequencies, and performance history.</p>
+        </div>
+
+        <form method="POST" class="stacked-form">
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Password" minlength="6" required>
+            <button class="primary-btn" type="submit">Create Account</button>
+        </form>
+
+        <div class="form-note">Already have an account? <a href="/login">Login</a></div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}RAAGA LAB - AI Music Analysis{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-left reveal">
+        <span class="eyebrow">AI music intelligence</span>
+        <h1>
+            Analyze every take with calm, precise musical data.
+        </h1>
+        <p>
+            RAAGA LAB turns vocals and instrument recordings into pitch, waveform,
+            spectrogram, timing, silence, and comparison insights inside one elegant studio workspace.
+        </p>
+
+        <div class="hero-buttons">
+            <a class="primary-btn" href="/single-analysis">Analyze a Take</a>
+            <a class="secondary-btn" href="/comparison-analysis">Compare Two Tracks</a>
+        </div>
+
+        <div class="trust-strip">
+            <span>Pitch tracking</span>
+            <span>Spectrograms</span>
+            <span>Live recording</span>
+            <span>Session history</span>
+        </div>
+    </div>
+
+    <div class="hero-right reveal">
+        <div class="studio-panel">
+            <div class="studio-top">
+                <div class="studio-title">
+                    <strong>Studio Intelligence</strong>
+                    <span>Realtime-style monitor / Practice take</span>
+                </div>
+                <span class="status-dot">Ready</span>
+            </div>
+
+            <div class="visualizer">
+                <div class="orbital-line"></div>
+                <div class="bars" aria-hidden="true">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+
+            <div class="studio-metrics">
+                <div class="metric-tile">
+                    <span>Note</span>
+                    <strong>A4</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Pitch</span>
+                    <strong>440 Hz</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Stability</span>
+                    <strong>94%</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <div>
+            <span class="kicker">Workflow</span>
+            <h2>A production-grade practice loop</h2>
+        </div>
+        <p class="section-intro">Upload, record, visualize, compare, and track progress without leaving the flow.</p>
+    </div>
+
+    <div class="feature-grid">
+        <a class="result-card feature-link" href="/single-analysis">
+            <h3>01 Solo Analysis</h3>
+            <p>Map the take</p>
+            <small>Waveform, pitch, spectrum, silence, timing, and feedback.</small>
+        </a>
+        <a class="result-card feature-link" href="/comparison-analysis">
+            <h3>02 Duel Analysis</h3>
+            <p>Compare tracks</p>
+            <small>Reference and performance views with AI-style scoring.</small>
+        </a>
+        <a class="result-card feature-link" href="/dashboard">
+            <h3>03 Dashboard</h3>
+            <p>Track progress</p>
+            <small>History, trends, chart previews, and insight cards.</small>
+        </a>
+        <a class="result-card feature-link" href="/practice">
+            <h3>04 Practice Studio</h3>
+            <p>Stay focused</p>
+            <small>Mode-based entry points for voice and instruments.</small>
+        </a>
+    </div>
+</section>
+
+<section class="section split-band">
+    <div>
+        <span class="kicker">Signal layer</span>
+        <h2>Built for musicians who want evidence, not noise.</h2>
+    </div>
+    <div class="signal-grid">
+        <div class="mini-signal"><span></span><strong>Dominant frequency</strong></div>
+        <div class="mini-signal"><span></span><strong>Vocal range</strong></div>
+        <div class="mini-signal"><span></span><strong>Timing consistency</strong></div>
+        <div class="mini-signal"><span></span><strong>Silence detection</strong></div>
+    </div>
+</section>
+{% endblock %}

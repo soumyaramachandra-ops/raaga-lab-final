@@ -1,0 +1,88 @@
+/* DUEL MODE */
+.dashboard-grid.duel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+}
+
+/* REFERENCE SECTION */
+/* PERFORMANCE SECTION */
+.duel-card {
+    min-width: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto minmax(220px, 1fr) auto;
+    align-items: start;
+}
+
+.duel-card .kicker {
+    min-height: 16px;
+}
+
+.duel-card h2 {
+    min-height: 42px;
+}
+
+.duel-card .analysis-image {
+    width: 100%;
+    height: clamp(220px, 24vw, 310px);
+    object-fit: contain;
+    align-self: stretch;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+        #15111a;
+    box-shadow: inset 0 0 34px rgba(118, 231, 242, 0.045);
+}
+
+.duel-card .download-link {
+    width: fit-content;
+    align-self: end;
+}
+
+.duel-waveform-card .analysis-image {
+    border-color: color-mix(in srgb, var(--waveform-reference) 28%, var(--line));
+}
+
+.duel-waveform-card.duel-performance-card .analysis-image {
+    border-color: color-mix(in srgb, var(--waveform-performance) 28%, var(--line));
+}
+
+.duel-reference-card::after,
+.duel-performance-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.28;
+}
+
+.duel-reference-card::after {
+    background: linear-gradient(135deg, rgba(118, 231, 242, 0.1), transparent 42%);
+}
+
+.duel-performance-card::after {
+    background: linear-gradient(135deg, rgba(255, 127, 147, 0.1), transparent 42%);
+}
+
+@media (max-width: 980px) {
+    .dashboard-grid.duel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .duel-card {
+        grid-template-rows: auto auto auto auto;
+    }
+
+    .duel-card .analysis-image {
+        height: clamp(210px, 48vw, 320px);
+    }
+}
+
+@media (max-width: 640px) {
+    .duel-card h2 {
+        min-height: 0;
+    }
+
+    .duel-card .analysis-image {
+        height: 220px;
+    }
+}

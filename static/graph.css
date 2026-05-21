@@ -1,0 +1,161 @@
+/* COMBINED COMPARISON GRAPH */
+.combined-graph-card {
+    padding: 0;
+    background:
+        linear-gradient(145deg, rgba(118, 231, 242, 0.07), transparent 42%),
+        linear-gradient(315deg, rgba(255, 127, 147, 0.07), transparent 44%),
+        var(--card-background);
+}
+
+.combined-graph-shell {
+    display: grid;
+    gap: 16px;
+    padding: 24px;
+}
+
+.combined-graph-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.combined-graph-header h2 {
+    margin-top: 6px;
+}
+
+.duel-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.duel-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--soft);
+    background: rgba(255, 255, 255, 0.055);
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.duel-legend span::before {
+    content: "";
+    width: 26px;
+    height: 3px;
+    border-radius: 999px;
+    box-shadow: 0 0 14px currentColor;
+}
+
+.duel-legend .reference-line::before {
+    background: var(--graph-reference);
+}
+
+.duel-legend .performance-line::before {
+    background: var(--graph-performance);
+}
+
+.duel-chart-frame {
+    position: relative;
+    min-height: 390px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background:
+        linear-gradient(var(--graph-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--graph-grid) 1px, transparent 1px),
+        rgba(8, 9, 15, 0.52);
+    background-size: 42px 42px;
+    box-shadow: inset 0 0 46px rgba(118, 231, 242, 0.055), var(--shadow-soft);
+}
+
+.duel-chart-frame::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--graph-baseline), transparent);
+    box-shadow: 0 0 20px var(--graph-baseline);
+    pointer-events: none;
+}
+
+.duel-comparison-chart {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 350px;
+    display: block;
+}
+
+/* GRAPH TOOLTIP */
+.duel-graph-note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* GRAPH ZOOM */
+.duel-chart-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+}
+
+.duel-zoom-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.duel-zoom-controls button {
+    min-height: 36px;
+    padding: 8px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 850;
+    transition: 180ms ease;
+}
+
+.duel-zoom-controls button:hover {
+    border-color: color-mix(in srgb, var(--cyan) 44%, transparent);
+    background: rgba(118, 231, 242, 0.11);
+}
+
+@media (max-width: 640px) {
+    .combined-graph-shell {
+        padding: 18px;
+    }
+
+    .combined-graph-header {
+        display: grid;
+        align-items: start;
+    }
+
+    .duel-legend {
+        justify-content: flex-start;
+    }
+
+    .duel-chart-frame {
+        min-height: 310px;
+        padding: 10px;
+    }
+
+    .duel-comparison-chart {
+        height: 280px;
+    }
+}
+

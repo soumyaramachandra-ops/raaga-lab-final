@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}How It Works - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Four-step loop</span>
+    <h1>How <span class="gradient-text">RAAGA LAB</span> works</h1>
+    <p>Move from raw recording to repeatable practice insight in a compact workflow.</p>
+</section>
+
+<section class="timeline">
+    <div class="timeline-item">
+        <div class="timeline-number">1</div>
+        <div class="timeline-card">
+            <h2>Upload Or Record</h2>
+            <p>Upload vocal or instrument audio, including MP4 files that need audio extraction.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-number">2</div>
+        <div class="timeline-card">
+            <h2>Detect Pitch</h2>
+            <p>The backend reads duration, dominant frequency, nearest note, waveform, and pitch graph.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-number">3</div>
+        <div class="timeline-card">
+            <h2>Compare Performance</h2>
+            <p>Duel Analysis compares reference and performance files for note, timing, and pitch proximity.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-number">4</div>
+        <div class="timeline-card">
+            <h2>Track Progress</h2>
+            <p>Sessions are stored locally so your dashboard can show recent practice history.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

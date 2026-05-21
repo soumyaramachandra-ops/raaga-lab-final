@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Instrument Studio - RAAGA LAB{% endblock %}
+
+{% block content %}
+<section class="analysis-header">
+    <span class="eyebrow">Instrument intelligence</span>
+    <h1>Instrument <span class="gradient-text">studio</span></h1>
+    <p>Analyze instruments with clean graphs, frequency detection, and reference comparison.</p>
+</section>
+
+<section class="mode-grid">
+    <a href="/single-analysis" class="mode-card">
+        <div class="upload-icon">Solo</div>
+        <h2>Solo Analysis</h2>
+        <p>Upload one instrument recording for waveform and note tracking.</p>
+    </a>
+
+    <a href="/comparison-analysis" class="mode-card">
+        <div class="upload-icon">Duel</div>
+        <h2>Duel Analysis</h2>
+        <p>Compare your instrument performance against a reference track.</p>
+    </a>
+</section>
+{% endblock %}

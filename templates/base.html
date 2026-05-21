@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RAAGA LAB{% endblock %}</title>
+    <script>
+        const savedTheme = localStorage.getItem("raaga-theme") || "dark";
+        document.documentElement.dataset.theme = savedTheme;
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="ambient-layer" aria-hidden="true"></div>
+    <div class="app-shell">
+        <header class="navbar-wrap">
+            <div class="container">
+                <nav class="navbar" aria-label="Primary navigation">
+                    <a class="logo" href="/">
+                        <span class="logo-icon">RL</span>
+                        <span>RAAGA LAB</span>
+                    </a>
+
+                    <div class="nav-links">
+                        <a href="/">Home</a>
+                        <a href="/features">Features</a>
+                        <a href="/practice">Practice</a>
+                        <a href="/single-analysis">Solo</a>
+                        <a href="/comparison-analysis">Duel</a>
+                        <a href="/dashboard">Dashboard</a>
+                    </div>
+
+                    <div class="nav-actions">
+                        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
+                            <span data-theme-icon>Dark</span>
+                        </button>
+                        {% if is_logged_in %}
+                            <a class="get-started-btn" href="/logout">Logout</a>
+                        {% else %}
+                            <a class="get-started-btn" href="/login">Get Started</a>
+                        {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <div class="container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-stack">
+                            {% for category, message in messages %}
+                                <div class="flash-message {{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <a class="logo" href="/">
+                            <span class="logo-icon">RL</span>
+                            <span>RAAGA LAB</span>
+                        </a>
+                        <p>AI music analytics for singers, instrumentalists, teachers, and creators.</p>
+                    </div>
+                    <div>
+                        <h2>Platform</h2>
+                        <ul>
+                            <li><a href="/features">Features</a></li>
+                            <li><a href="/practice">Practice Studio</a></li>
+                            <li><a href="/how-it-works">How It Works</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Analyze</h2>
+                        <ul>
+                            <li><a href="/single-analysis">Solo Analysis</a></li>
+                            <li><a href="/comparison-analysis">Duel Analysis</a></li>
+                            <li><a href="/dashboard">Dashboard</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Support</h2>
+                        <ul>
+                            <li><a href="/contact">Contact</a></li>
+                            {% if is_logged_in %}
+                                <li><a href="/logout">Logout</a></li>
+                            {% else %}
+                                <li><a href="/login">Login</a></li>
+                            {% endif %}
+                            <li><a href="/signup">Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">&copy; 2026 RAAGA LAB. All rights reserved.</div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
