@@ -1,0 +1,28 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Database
+database.db/
+*.db
+*.sqlite3
+
+# Environment
+.env
+.flaskenv
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Uploads & Generated Files
+static/uploads/
+static/graphs/
+
+# OS
+.DS_Store
+Thumbs.db
